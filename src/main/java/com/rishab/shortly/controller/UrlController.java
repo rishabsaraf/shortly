@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rishab.shortly.pojo.Url;
+import com.rishab.shortly.pojo.UrlDto;
 import com.rishab.shortly.repo.UrlRepository;
 import com.rishab.shortly.util.UrlIdConversionUtil;
 
@@ -25,14 +25,14 @@ public class UrlController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Url getUrl(@PathVariable final String id) {
+    public UrlDto getUrl(@PathVariable final String id) {
         return urlRepository.findById(UrlIdConversionUtil.generate(id))
                             .get();
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public Map<String, String> shortenUrl(@RequestParam(name = "url", required = true) final String url) {
-        Url urlObject = new Url(url);
+        UrlDto urlObject = new UrlDto(url);
         urlRepository.save(urlObject);
         Map<String, String> result = new HashMap<>();
         result.put("result", UrlIdConversionUtil.getStringRepresentation(urlObject.getId()));

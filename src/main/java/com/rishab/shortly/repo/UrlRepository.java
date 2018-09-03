@@ -2,7 +2,7 @@ package com.rishab.shortly.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.rishab.shortly.pojo.Url;
+import com.rishab.shortly.pojo.UrlDto;
 
-public interface UrlRepository extends JpaRepository<Url, Long> {
+public interface UrlRepository extends JpaRepository<UrlDto, Long> {
 }
