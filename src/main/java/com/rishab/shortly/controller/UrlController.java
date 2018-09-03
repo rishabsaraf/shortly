@@ -17,6 +17,7 @@ import com.rishab.shortly.util.UrlIdConversionUtil;
 @RestController
 public class UrlController {
 
+    private static final String BASE_URL = "http://localhost:9091/";
     private final UrlRepository urlRepository;
 
     @Autowired
@@ -35,7 +36,8 @@ public class UrlController {
         UrlDto urlObject = new UrlDto(url);
         urlRepository.save(urlObject);
         Map<String, String> result = new HashMap<>();
-        result.put("result", UrlIdConversionUtil.getStringRepresentation(urlObject.getId()));
+        // TODO: extract the base url from the request
+        result.put("tiny_url", BASE_URL + UrlIdConversionUtil.getStringRepresentation(urlObject.getId()));
         return result;
     }
 }
