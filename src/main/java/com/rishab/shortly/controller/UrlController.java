@@ -31,7 +31,7 @@ public class UrlController {
                             .get();
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Map<String, String> shortenUrl(@RequestParam(name = "url", required = true) final String url) {
         UrlDto urlObject = new UrlDto(url);
         urlRepository.save(urlObject);
