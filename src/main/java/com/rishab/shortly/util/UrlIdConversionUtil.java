@@ -3,6 +3,9 @@ package com.rishab.shortly.util;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class UrlIdConversionUtil {
 
     private static final long BASE = 62;
@@ -84,10 +87,10 @@ public class UrlIdConversionUtil {
         return output;
     }
 
-    public static String getStringRepresentation(final long input) {
+    public static String getStringRepresentation(final long input, final int strLength) {
         String output = "";
         long inputBuffer = input;
-        while (output.length() < 6) {
+        while (output.length() < strLength) {
             output = DICTIONARY.inverse()
                                .get(inputBuffer % BASE) + output;
             inputBuffer = inputBuffer / BASE;

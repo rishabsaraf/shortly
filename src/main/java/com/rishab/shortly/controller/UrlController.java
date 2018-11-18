@@ -3,41 +3,70 @@ package com.rishab.shortly.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rishab.shortly.pojo.SaveRequestBody;
+import com.rishab.shortly.pojo.ShortlyResponse;
 import com.rishab.shortly.pojo.UrlDto;
 import com.rishab.shortly.repo.UrlRepository;
 import com.rishab.shortly.util.UrlIdConversionUtil;
+import com.rishab.shortly.util.UrlUtil;
 
 @RestController
 public class UrlController {
 
-    private static final String BASE_URL = "http://localhost:9091/";
     private final UrlRepository urlRepository;
+    private final int STRING_LENGTH = 6;
+    private final String TINY_URL_KEY = "tiny_url";
 
     @Autowired
     public UrlController(final UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public UrlDto getUrl(@PathVariable final String id) {
-        return urlRepository.findById(UrlIdConversionUtil.generate(id))
-                            .get();
+    @RequestMapping(value = "/rest/{id}", method = RequestMethod.GET)
+    public ShortlyResponse getUrl(@PathVariable final String id) {
+        try {
+            return ShortlyResponse.builder()
+                                  .data(urlRepository.findById(UrlIdConversionUtil.generate(id))
+                                                     .get())
+                                  .build();
+        } catch (Exception e) {
+            return ShortlyResponse.builder()
+                                  .hasError(true)
+                                  .errorMessage(e.getMessage())
+                                  .build();
+        }
+
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Map<String, String> shortenUrl(@RequestParam(name = "url", required = true) final String url) {
-        UrlDto urlObject = new UrlDto(url);
-        urlRepository.save(urlObject);
-        Map<String, String> result = new HashMap<>();
-        // TODO: extract the base url from the request
-        result.put("tiny_url", BASE_URL + UrlIdConversionUtil.getStringRepresentation(urlObject.getId()));
-        return result;
+    public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
+        try {
+            String url = body.getUrl();
+            if (!UrlUtil.isValid(url)) {
+                throw new IllegalArgumentException("Invalid URL");
+            }
+            UrlDto urlObject = new UrlDto(url);
+            urlRepository.save(urlObject);
+            Map<String, String> result = new HashMap<>();
+            String relativePath = UrlIdConversionUtil.getStringRepresentation(urlObject.getId(), STRING_LENGTH);
+            result.put(TINY_URL_KEY, UrlUtil.getFullUrl(request, relativePath));
+            return ShortlyResponse.builder()
+                                  .data(result)
+                                  .build();
+        } catch (Exception e) {
+            return ShortlyResponse.builder()
+                                  .hasError(true)
+                                  .errorMessage(e.getMessage())
+                                  .build();
+        }
     }
 }
