@@ -30,9 +30,9 @@ public class UrlUtil {
 
     public boolean isValid(final String url) {
         try {
-            new URL(url);
+            new URL(url).toURI();
             return true;
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException | MalformedURLException e) {
             return false;
         }
     }
