@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UtilityClass
 public class UrlUtil {
 
@@ -33,6 +35,7 @@ public class UrlUtil {
             new URL(url).toURI();
             return true;
         } catch (URISyntaxException | MalformedURLException e) {
+            log.info("the URL {} is not valid", url);
             return false;
         }
     }
