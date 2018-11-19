@@ -1,0 +1,7 @@
+.shortly-width-50 {
+    width:50%;
+    min-width:330px;
+}
+.shortly-block-center {
+    margin:0 auto;
+}

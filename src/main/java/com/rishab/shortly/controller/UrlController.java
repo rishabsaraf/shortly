@@ -2,6 +2,7 @@ package com.rishab.shortly.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +20,9 @@ import com.rishab.shortly.repo.UrlRepository;
 import com.rishab.shortly.util.UrlIdConversionUtil;
 import com.rishab.shortly.util.UrlUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class UrlController {
 
@@ -39,15 +43,20 @@ public class UrlController {
                                                      .get())
                                   .build();
         } catch (Exception e) {
+            log.error("Failed to get URL with exception", e);
+            String errorMessage = e.getMessage();
+            if (e instanceof NoSuchElementException) {
+                errorMessage = "The requested URL does not exist";
+            }
             return ShortlyResponse.builder()
                                   .hasError(true)
-                                  .errorMessage(e.getMessage())
+                                  .errorMessage(errorMessage)
                                   .build();
         }
 
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/save", method = RequestMethod.POST)
     public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
         try {
             String url = body.getUrl();
