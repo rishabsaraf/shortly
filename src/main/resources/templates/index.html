@@ -10,14 +10,14 @@
 <div class="w3-bar w3-padding w3-indigo" style="margin-top:0;">
     <a href="/" class="w3-bar-item w3-button w3-hover-indigo w3-padding-large"><h1>Shortly</h1></a>
 </div>
-<div ng-controller="ShortlyController" ng-init="initHome()" class="w3-container w3-margin" style="width:100%;">
+<div ng-controller="ShortlyController" class="w3-container w3-margin" style="width:100%;">
     <div class="w3-display-container shortly-width-50 shortly-block-center w3-panel w3-white w3-border w3-border-red w3-center"
          ng-show="hasError">
         <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
         <p> {{error}} </p>
     </div>
 
-    <div class="w3-card-4 w3-margin w3-sand" ng-show="isHome">
+    <div class="w3-card-4 w3-margin w3-sand">
         <form class="w3-container">
             <input type="text" ng-model="requestUrl" class="w3-input w3-border-indigo w3-margin-top"/><br/>
             <button ng-click="shorten(requestUrl)"
