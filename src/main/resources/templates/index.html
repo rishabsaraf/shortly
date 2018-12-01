@@ -27,7 +27,13 @@
     </div>
 
     <div class="w3-card-4 w3-margin w3-lime w3-center" ng-show="!!shortUrl">
-        <span class="w3-container w3-opacity w3-margin">{{shortUrl}}</span>
+        <span class="w3-container w3-opacity w3-margin">
+            {{shortUrl}}
+            <button ng-click="copyToClipboard('shortUrlTextArea')" ng-disabled="isCopied">
+                {{copyButtonText}}
+            </button>
+        </span>
+        <textarea id="shortUrlTextArea" style="position: absolute;left: -10000px">{{shortUrl}}</textarea>
     </div>
 </div>
 </body>

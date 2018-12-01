@@ -1,9 +1,10 @@
-var Shortly = angular.module('Shortly', []).controller('ShortlyController', ['$scope', '$http', '$window', '$log', function ($scope, $http, $window, $log) {
-
+var Shortly = angular.module('Shortly', []).controller('ShortlyController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
     $scope.hasError = false;
     $scope.error = "";
     $scope.shortUrl = "";
     $scope.requestUrl = "https://";
+    $scope.copyButtonText = "Copy";
+    $scope.isCopied = false;
 
     $scope.shorten = function (requestUrl) {
         var requestData = {
@@ -23,4 +24,16 @@ var Shortly = angular.module('Shortly', []).controller('ShortlyController', ['$s
             $scope.error = 'Something went wrong!';
         });
     };
+
+    $scope.copyToClipboard = function (elementId) {
+        document.getElementById(elementId).select();
+        document.execCommand("copy");
+        $scope.copyButtonText = "Copied";
+        $scope.isCopied = true;
+        $timeout(function () {
+            $scope.copyButtonText = "Copy";
+            $scope.isCopied = false;
+        }, 1200);
+    };
+
 }]);
