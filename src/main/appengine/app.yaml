@@ -4,6 +4,9 @@ env: flex
 runtime_config:
   jdk: openjdk8
 
+env_variables:
+  SPRING_PROFILES_ACTIVE: "gcloud"
+
 handlers:
 - url: /.*
   script: this field is required, but ignored

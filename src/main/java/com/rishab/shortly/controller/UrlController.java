@@ -7,10 +7,10 @@ import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rishab.shortly.pojo.SaveRequestBody;
@@ -33,9 +33,10 @@ public class UrlController {
     @Autowired
     public UrlController(final UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
+        log.info("Initialized UrlController");
     }
 
-    @RequestMapping(value = "/rest/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/rest/{id}")
     public ShortlyResponse getUrl(@PathVariable final String id) {
         try {
             return ShortlyResponse.builder()
@@ -56,7 +57,7 @@ public class UrlController {
 
     }
 
-    @RequestMapping(value = "/rest/save", method = RequestMethod.POST)
+    @PostMapping(value = "/rest/save")
     public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
         try {
             String url = body.getUrl();

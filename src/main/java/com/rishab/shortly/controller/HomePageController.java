@@ -6,9 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rishab.shortly.pojo.UrlDto;
 import com.rishab.shortly.repo.UrlRepository;
@@ -25,9 +24,10 @@ public class HomePageController {
     @Autowired
     public HomePageController(final UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
+        log.info("Initialized HomePageController");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public String homePage(@PathVariable final Optional<String> id, final HttpServletResponse response) {
         if (id.isPresent()) {
             try {
