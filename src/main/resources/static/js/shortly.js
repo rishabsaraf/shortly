@@ -2,7 +2,7 @@ var Shortly = angular.module('Shortly', []).controller('ShortlyController', ['$s
     $scope.hasError = false;
     $scope.error = "";
     $scope.shortUrl = "";
-    $scope.requestUrl = "https://";
+    $scope.requestUrl = "";
     $scope.copyButtonText = "Copy";
     $scope.isCopied = false;
 
