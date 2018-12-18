@@ -63,7 +63,13 @@ public class UrlController {
     public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
         try {
             String url = body.getUrl();
-            if (StringUtils.isEmpty(url) || !UrlUtil.isValid(url)) {
+            if (StringUtils.isEmpty(url)) {
+                throw new IllegalArgumentException("Invalid URL");
+            }
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "http://" + url;
+            }
+            if (!UrlUtil.isValid(url)) {
                 throw new IllegalArgumentException("Invalid URL");
             }
             UrlDto urlObject = new UrlDto(url);
