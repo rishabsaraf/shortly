@@ -61,9 +61,6 @@ public class UrlController {
     public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
         try {
             String url = body.getUrl();
-            if (!UrlUtil.isValid(url)) {
-                throw new IllegalArgumentException("Invalid URL");
-            }
             UrlDto urlObject = new UrlDto(url);
             urlRepository.save(urlObject);
             Map<String, String> result = new HashMap<>();

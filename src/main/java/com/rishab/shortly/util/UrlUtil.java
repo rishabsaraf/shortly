@@ -29,14 +29,4 @@ public class UrlUtil {
         return url.getProtocol() + PROTOCOL_SEPARATOR + url.getAuthority();
 
     }
-
-    public boolean isValid(final String url) {
-        try {
-            new URL(url).toURI();
-            return true;
-        } catch (URISyntaxException | MalformedURLException e) {
-            log.info("the URL {} is not valid", url);
-            return false;
-        }
-    }
 }
