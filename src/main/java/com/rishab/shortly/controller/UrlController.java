@@ -29,6 +29,7 @@ public class UrlController {
     private final UrlRepository urlRepository;
     private final int STRING_LENGTH = 6;
     private final String TINY_URL_KEY = "tiny_url";
+    private final String DEFAULT_ERROR_MESSAGE = "Something went wrong";
 
     @Autowired
     public UrlController(final UrlRepository urlRepository) {
@@ -45,7 +46,7 @@ public class UrlController {
                                   .build();
         } catch (Exception e) {
             log.error("Failed to get URL with exception", e);
-            String errorMessage = e.getMessage();
+            String errorMessage = DEFAULT_ERROR_MESSAGE;
             if (e instanceof NoSuchElementException) {
                 errorMessage = "The requested URL does not exist";
             }
@@ -72,7 +73,7 @@ public class UrlController {
         } catch (Exception e) {
             return ShortlyResponse.builder()
                                   .hasError(true)
-                                  .errorMessage(e.getMessage())
+                                  .errorMessage(DEFAULT_ERROR_MESSAGE)
                                   .build();
         }
     }

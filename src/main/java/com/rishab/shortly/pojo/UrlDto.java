@@ -22,7 +22,6 @@ public class UrlDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @URL
     private String url;
 
     public UrlDto(final String url) {
