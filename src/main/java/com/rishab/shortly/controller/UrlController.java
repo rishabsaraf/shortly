@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,7 +63,7 @@ public class UrlController {
     public ShortlyResponse shortenUrl(@RequestBody final SaveRequestBody body, HttpServletRequest request) {
         try {
             String url = body.getUrl();
-            if (!UrlUtil.isValid(url)) {
+            if (StringUtils.isEmpty(url) || !UrlUtil.isValid(url)) {
                 throw new IllegalArgumentException("Invalid URL");
             }
             UrlDto urlObject = new UrlDto(url);
@@ -76,7 +77,7 @@ public class UrlController {
         } catch (Exception e) {
             return ShortlyResponse.builder()
                                   .hasError(true)
-                                  .errorMessage(DEFAULT_ERROR_MESSAGE)
+                                  .errorMessage(e.getMessage())
                                   .build();
         }
     }
